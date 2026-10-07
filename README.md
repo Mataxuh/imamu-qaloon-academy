@@ -26,11 +26,15 @@ The platform is built around three outcomes:
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/homepage.svg" alt="IQA homepage preview" width="48%" />
-  <img src="docs/screenshots/admin-dashboard.svg" alt="IQA admin dashboard preview" width="48%" />
+  <img src="docs/screenshots/homepage-real.png" alt="Live IQA homepage screenshot" width="48%" />
+  <img src="docs/screenshots/programs-real.png" alt="Live IQA programs page screenshot" width="48%" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/contact-real.png" alt="Live IQA contact page screenshot" width="48%" />
+  <img src="docs/screenshots/admin-login-real.png" alt="Live IQA admin login screenshot" width="48%" />
 </p>
 
-_These repository-local visual snapshots keep the GitHub overview self-contained._
+_These screenshots were captured from the running IQA website. The admin capture shows the protected login entry point; no applicant data is included._
 
 ## Features
 
@@ -90,7 +94,7 @@ npm run dev
 
 On macOS/Linux, use `cp .env.example .env` instead of `copy`.
 
-Then open [http://localhost:3000](http://localhost:3000). The admin entry point is available at `/admin-login`.
+Then open [http://localhost:3001](http://localhost:3000). The admin entry point is available at `/admin-login`.
 
 For a production-style start:
 
