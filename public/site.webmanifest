@@ -1,0 +1,9 @@
+{
+  "name": "Imamu Qaloon Academy (IQA)",
+  "short_name": "IQA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f1e7",
+  "theme_color": "#123d38",
+  "description": "Faith-centered Quran, Arabic, and Islamic learning for children, youth, and adults."
+}

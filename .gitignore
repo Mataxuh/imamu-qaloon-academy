@@ -1,0 +1,14 @@
+node_modules/
+.env
+npm-debug.log*
+.DS_Store
+
+# Local operational data; never publish applicant records.
+data/*.db
+data/*.csv
+data/*.json
+
+# Local editor and OS files.
+.vscode/
+.idea/
+Thumbs.db

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | Imamu Qaloon Academy (IQA)</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --admin-green: #123d38;
+        --admin-gold: #c19342;
+        --admin-panel: rgba(255, 255, 255, 0.82);
+        --admin-border: rgba(18, 61, 56, 0.12);
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top left, rgba(193, 147, 66, 0.2), transparent 22%),
+          radial-gradient(circle at bottom right, rgba(18, 61, 56, 0.1), transparent 28%),
+          linear-gradient(135deg, #f8f3eb 0%, #f1eadc 100%);
+      }
+
+      .login-shell {
+        width: min(520px, 100%);
+        position: relative;
+      }
+
+      .login-shell::before {
+        content: "";
+        position: absolute;
+        inset: -18px;
+        border-radius: 32px;
+        background: linear-gradient(135deg, rgba(193, 147, 66, 0.18), rgba(18, 61, 56, 0.08));
+        filter: blur(30px);
+        z-index: 0;
+      }
+
+      .login-box {
+        position: relative;
+        z-index: 1;
+        background: var(--admin-panel);
+        border: 1px solid var(--admin-border);
+        border-radius: 28px;
+        padding: 30px 28px 26px;
+        box-shadow: 0 28px 60px rgba(12, 42, 37, 0.1);
+        backdrop-filter: blur(8px);
+      }
+
+      .brand-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(18, 61, 56, 0.05);
+        border: 1px solid rgba(18, 61, 56, 0.08);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--admin-green);
+        font-weight: 800;
+        margin-bottom: 1.2rem;
+      }
+
+      .brand-badge {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1d4d48 0%, #123d38 100%);
+        color: #f5ead0;
+        font-weight: 800;
+        font-size: 0.82rem;
+      }
+
+      .login-box h1 {
+        margin-bottom: 0.5rem;
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+      }
+
+      .subtitle {
+        margin-bottom: 1.6rem;
+        font-size: 1rem;
+        color: #4e665f;
+      }
+
+      .login-form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .field-label {
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--admin-green);
+        font-weight: 800;
+      }
+
+      .login-form input {
+        min-height: 56px;
+        border-radius: 14px;
+        border: 1px solid rgba(18, 61, 56, 0.12);
+        background: rgba(255, 255, 255, 0.96);
+        color: var(--admin-green);
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .login-form input:focus {
+        border-color: rgba(193, 147, 66, 0.9);
+        box-shadow: 0 0 0 3px rgba(193, 147, 66, 0.12);
+        outline: none;
+      }
+
+      .login-form .button {
+        width: 100%;
+        min-height: 56px;
+      }
+
+      .login-status {
+        min-height: 1.5rem;
+        margin-top: 1rem;
+        font-size: 0.85rem;
+        color: #aa4d3d;
+        font-weight: 700;
+      }
+
+      .login-note {
+        margin-top: 1.1rem;
+        color: #576b67;
+        font-size: 0.82rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-shell">
+      <div class="login-box">
+        <div class="brand-chip">
+          <span class="brand-badge">IQA</span>
+          Secure internal access
+        </div>
+
+        <span class="eyebrow">Restricted area</span>
+        <h1>Admin login</h1>
+        <p class="subtitle">Enter the academy password to open the private lead management dashboard.</p>
+
+        <form class="login-form" method="POST" action="/admin/login">
+          <label class="field-label" for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter admin password" autocomplete="current-password" required />
+          <button class="button" type="submit">Open dashboard</button>
+        </form>
+
+        <p id="loginStatus" class="login-status" aria-live="polite"></p>
+        <p class="login-note">This area is only for authorised academy staff.</p>
+      </div>
+    </div>
+
+    <script>
+      const status = document.getElementById('loginStatus');
+      const params = new URLSearchParams(window.location.search);
+      const errorMessage = params.get('error');
+
+      if (errorMessage) {
+        status.textContent = errorMessage;
+      }
+    </script>
+  </body>
+</html>

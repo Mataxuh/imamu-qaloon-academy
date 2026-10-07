@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Imamu Qaloon Academy (IQA)</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --admin-bg: #f4efe6;
+        --admin-panel: rgba(255, 255, 255, 0.8);
+        --admin-border: rgba(18, 61, 56, 0.12);
+        --admin-green: #153d37;
+        --admin-gold: #c69a4a;
+        --admin-soft: #edf7f0;
+        --admin-soft-text: #1d593f;
+        --admin-cream: #faf7f1;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(184, 138, 65, 0.16), transparent 24%),
+          linear-gradient(135deg, #f8f4ed 0%, #f2ebdf 100%);
+      }
+
+      .admin-shell {
+        max-width: 1240px;
+        margin: 32px auto;
+        padding: 24px;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 18px;
+        margin-bottom: 26px;
+        padding: 26px 26px 18px;
+        background: rgba(255,255,255,0.7);
+        border: 1px solid var(--admin-border);
+        border-radius: 26px;
+        box-shadow: 0 18px 34px rgba(23, 63, 54, 0.05);
+      }
+
+      .admin-header h1 {
+        margin-bottom: 0;
+        font-size: clamp(2.2rem, 4vw, 3.4rem);
+      }
+
+      .admin-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .admin-actions form {
+        display: inline-block;
+        margin: 0;
+      }
+
+      .button.ghost {
+        background: rgba(255,255,255,0.85);
+        border-color: rgba(18, 61, 56, 0.18);
+        color: var(--admin-green);
+      }
+
+      .button.ghost:hover {
+        background: rgba(242, 230, 196, 0.75);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 26px;
+      }
+
+      .summary-card {
+        background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,247,241,0.95));
+        border: 1px solid var(--admin-border);
+        border-radius: 20px;
+        padding: 18px 20px;
+        box-shadow: 0 14px 26px rgba(23, 63, 54, 0.05);
+      }
+
+      .summary-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #637470;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .summary-value {
+        font-family: "Cairo", "Tajawal", sans-serif;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-weight: 800;
+        color: var(--admin-green);
+      }
+
+      .dashboard-tools {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: end;
+        margin: 0 0 20px;
+        padding: 18px 20px;
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.72);
+      }
+
+      .tool-group {
+        display: grid;
+        gap: 8px;
+        min-width: min(100%, 220px);
+        flex: 1 1 200px;
+      }
+
+      .tool-group label {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #5b6b67;
+      }
+
+      .tool-group input,
+      .tool-group select {
+        width: 100%;
+        min-height: 46px;
+        border-radius: 12px;
+        border: 1px solid rgba(18, 61, 56, 0.12);
+        padding: 0.7rem 0.9rem;
+        background: rgba(255,255,255,0.92);
+        color: var(--admin-green);
+      }
+
+      .status-panel {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin: 0 0 22px;
+      }
+
+      .status-box {
+        background: rgba(255,255,255,0.75);
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+
+      .status-box .mini-label {
+        display: block;
+        font-size: 0.68rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #677a75;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .status-box strong {
+        display: block;
+        font-family: "Cairo", "Tajawal", sans-serif;
+        font-size: clamp(1.2rem, 2vw, 2rem);
+        color: var(--admin-green);
+      }
+
+      .admin-panel {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid var(--admin-border);
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(23, 63, 54, 0.07);
+        overflow: hidden;
+      }
+
+      .admin-panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--admin-border);
+        background: linear-gradient(180deg, rgba(18,61,56,0.04), rgba(18,61,56,0.02));
+      }
+
+      .admin-panel-head .muted {
+        margin: 0;
+        font-size: 0.88rem;
+      }
+
+      .export-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .admin-table-wrap {
+        overflow-x: auto;
+      }
+
+      .admin-table {
+        width: 100%;
+        min-width: 1380px;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #ece3d8;
+        border-right: 1px solid #eee7de;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .admin-table th:last-child,
+      .admin-table td:last-child {
+        border-right: 0;
+      }
+
+      .admin-table th:nth-child(2),
+      .admin-table td:nth-child(2) {
+        min-width: 130px;
+        white-space: nowrap;
+      }
+
+      .admin-table th {
+        background: linear-gradient(180deg, #173f36 0%, #11362f 100%);
+        color: white;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .admin-table td {
+        color: #20473f;
+        font-size: 0.9rem;
+      }
+
+      .admin-table tbody tr:hover td {
+        background: #fbf8f2;
+      }
+
+      .status-pill {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--admin-soft);
+        color: var(--admin-soft-text);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: capitalize;
+      }
+
+      .lead-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .action-button {
+        border: 1px solid rgba(18, 61, 56, 0.14);
+        background: rgba(255,255,255,0.9);
+        color: var(--admin-green);
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .action-button.delete {
+        border-color: rgba(166, 55, 55, 0.2);
+        color: #9a2c2c;
+      }
+
+      .action-button:hover {
+        background: rgba(242, 230, 196, 0.7);
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 24, 21, 0.52);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        padding: 20px;
+      }
+
+      .modal.visible {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(640px, 100%);
+        background: #fffdf9;
+        border: 1px solid rgba(18, 61, 56, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 26px 60px rgba(20, 34, 31, 0.2);
+        overflow: hidden;
+      }
+
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 22px;
+        border-bottom: 1px solid rgba(18, 61, 56, 0.12);
+        background: linear-gradient(180deg, rgba(18,61,56,0.05), rgba(18,61,56,0.02));
+      }
+
+      .modal-body {
+        padding: 20px 22px 24px;
+      }
+
+      .modal-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .modal-field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .modal-field.full {
+        grid-column: 1 / -1;
+      }
+
+      .modal-field label {
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #5d726c;
+      }
+
+      .modal-field input,
+      .modal-field select,
+      .modal-field textarea {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid rgba(18, 61, 56, 0.14);
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
+        background: rgba(255,255,255,0.96);
+        color: var(--admin-green);
+      }
+
+      .modal-field textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .inline-status-select {
+        min-width: 128px;
+        min-height: 38px;
+        border: 1px solid rgba(18, 61, 56, 0.14);
+        border-radius: 10px;
+        background: rgba(255,255,255,0.98);
+        color: var(--admin-green);
+        padding: 0.45rem 0.6rem;
+        font-weight: 700;
+      }
+
+      .toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 300;
+        min-width: 240px;
+        max-width: 360px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(18, 61, 56, 0.12);
+        background: rgba(20, 53, 47, 0.96);
+        color: #f6f4ef;
+        box-shadow: 0 18px 42px rgba(12, 25, 22, 0.2);
+        transform: translateY(12px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.22s ease;
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.success {
+        background: linear-gradient(180deg, rgba(21, 94, 69, 0.98), rgba(16, 77, 58, 0.98));
+      }
+
+      .toast.error {
+        background: linear-gradient(180deg, rgba(122, 32, 32, 0.98), rgba(97, 27, 27, 0.98));
+      }
+
+      .confirm-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(10, 18, 17, 0.55);
+        z-index: 220;
+      }
+
+      .confirm-modal.visible {
+        display: flex;
+      }
+
+      .confirm-card {
+        width: min(440px, 100%);
+        background: #fffdf9;
+        border-radius: 22px;
+        border: 1px solid rgba(18, 61, 56, 0.12);
+        box-shadow: 0 22px 52px rgba(12, 25, 22, 0.22);
+        overflow: hidden;
+      }
+
+      .confirm-card h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .confirm-head,
+      .confirm-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .confirm-head {
+        padding: 18px 20px;
+        border-bottom: 1px solid rgba(18, 61, 56, 0.12);
+      }
+
+      .confirm-body {
+        padding: 18px 20px;
+        color: #394d49;
+        line-height: 1.6;
+      }
+
+      .confirm-actions {
+        padding: 0 20px 20px;
+        justify-content: flex-end;
+      }
+
+      .muted { color: #5c6c67; }
+      .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+      @media (max-width: 760px) {
+        .admin-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .admin-panel-head { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body class="admin-page" data-theme="light">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <div>
+          <span class="eyebrow">Admin</span>
+          <h1>Lead dashboard</h1>
+        </div>
+        <div class="admin-actions">
+          <a class="button secondary" href="/">Website</a>
+          <form method="POST" action="/admin/logout">
+            <button class="button ghost" type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Total leads</span>
+          <div id="summaryTotal" class="summary-value">0</div>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">New</span>
+          <div id="summaryNew" class="summary-value">0</div>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">This month</span>
+          <div id="summaryMonth" class="summary-value">0</div>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Status</span>
+          <div id="summaryStatus" class="summary-value">Ready</div>
+        </div>
+      </div>
+
+      <div class="dashboard-tools">
+        <div class="tool-group">
+          <label for="leadSearch">Search leads</label>
+          <input id="leadSearch" type="search" placeholder="Search by ID, name, email, state..." />
+        </div>
+        <div class="tool-group">
+          <label for="leadStatusFilter">Filter by status</label>
+          <select id="leadStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="follow-up">Follow-up</option>
+            <option value="enrolled">Enrolled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="status-panel" aria-label="Lead status overview">
+        <div class="status-box">
+          <span class="mini-label">New</span>
+          <strong id="statusNewCount">0</strong>
+        </div>
+        <div class="status-box">
+          <span class="mini-label">Contacted</span>
+          <strong id="statusContactedCount">0</strong>
+        </div>
+        <div class="status-box">
+          <span class="mini-label">Follow-up</span>
+          <strong id="statusFollowUpCount">0</strong>
+        </div>
+        <div class="status-box">
+          <span class="mini-label">Enrolled</span>
+          <strong id="statusEnrolledCount">0</strong>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <div id="adminSummary" class="muted">Loading leads…</div>
+          <div class="export-actions">
+            <a class="button secondary" href="/api/leads.xlsx" download>Export workbook</a>
+            <a class="button secondary" href="/api/leads.raw.xlsx" download>Download Excel</a>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Applicant ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Program</th>
+                <th>State</th>
+                <th>Learner</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leadRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="leadModal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2>Edit lead</h2>
+          <button type="button" class="action-button" data-close-modal="true">Close</button>
+        </div>
+        <div class="modal-body">
+          <form id="leadForm" class="modal-form">
+            <input id="leadId" type="hidden" />
+
+            <div class="modal-field">
+              <label for="editName">Name</label>
+              <input id="editName" name="name" required />
+            </div>
+
+            <div class="modal-field">
+              <label for="editEmail">Email</label>
+              <input id="editEmail" name="email" type="email" required />
+            </div>
+
+            <div class="modal-field">
+              <label for="editPhone">Phone</label>
+              <input id="editPhone" name="phone" />
+            </div>
+
+            <div class="modal-field">
+              <label for="editLearner">Learner</label>
+              <select id="editLearner" name="learner" required>
+                <option value="Myself">Myself</option>
+                <option value="My child">My child</option>
+                <option value="Another adult learner">Another adult learner</option>
+              </select>
+            </div>
+
+            <div class="modal-field full">
+              <label for="editProgram">Program</label>
+              <input id="editProgram" name="program" required />
+            </div>
+
+            <div class="modal-field full">
+              <label for="editState">Applicant state</label>
+              <select id="editState" name="state">
+                <option value="">Not provided</option>
+                <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option>
+                <option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option>
+                <option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option>
+                <option>Ekiti</option><option>Enugu</option><option>Federal Capital Territory</option><option>Gombe</option>
+                <option>Imo</option><option>Jigawa</option><option>Kaduna</option><option>Kano</option>
+                <option>Katsina</option><option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+                <option>Lagos</option><option>Nasarawa</option><option>Niger</option><option>Ogun</option>
+                <option>Ondo</option><option>Osun</option><option>Oyo</option><option>Plateau</option>
+                <option>Rivers</option><option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+                <option>Zamfara</option><option>Outside Nigeria</option>
+              </select>
+            </div>
+
+            <div class="modal-field full">
+              <label for="editMessage">Message</label>
+              <textarea id="editMessage" name="message"></textarea>
+            </div>
+
+            <div class="modal-field full">
+              <label for="editStatus">Status</label>
+              <select id="editStatus" name="status">
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="follow-up">Follow-up</option>
+                <option value="enrolled">Enrolled</option>
+              </select>
+            </div>
+
+            <div class="modal-actions full">
+              <button type="button" class="button ghost" data-close-modal="true">Cancel</button>
+              <button type="submit" class="button">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-modal" id="confirmModal" aria-hidden="true">
+      <div class="confirm-card">
+        <div class="confirm-head">
+          <h3>Confirm deletion</h3>
+          <button type="button" class="action-button" data-confirm-close="true">Close</button>
+        </div>
+        <div class="confirm-body">
+          Are you sure you want to delete this lead? This action cannot be undone.
+        </div>
+        <div class="confirm-actions">
+          <button type="button" class="button ghost" data-confirm-close="true">Cancel</button>
+          <button type="button" class="button" id="confirmDeleteButton">Delete lead</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+      const searchInput = document.getElementById('leadSearch');
+      const statusFilter = document.getElementById('leadStatusFilter');
+      const rows = document.getElementById('leadRows');
+      const summary = document.getElementById('adminSummary');
+      const totalEl = document.getElementById('summaryTotal');
+      const newEl = document.getElementById('summaryNew');
+      const monthEl = document.getElementById('summaryMonth');
+      const statusEl = document.getElementById('summaryStatus');
+      const statusNewCount = document.getElementById('statusNewCount');
+      const statusContactedCount = document.getElementById('statusContactedCount');
+      const statusFollowUpCount = document.getElementById('statusFollowUpCount');
+      const statusEnrolledCount = document.getElementById('statusEnrolledCount');
+      const modal = document.getElementById('leadModal');
+      const confirmModal = document.getElementById('confirmModal');
+      const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+      const toast = document.getElementById('toast');
+      const leadForm = document.getElementById('leadForm');
+      const leadIdField = document.getElementById('leadId');
+      const editName = document.getElementById('editName');
+      const editEmail = document.getElementById('editEmail');
+      const editPhone = document.getElementById('editPhone');
+      const editLearner = document.getElementById('editLearner');
+      const editProgram = document.getElementById('editProgram');
+      const editState = document.getElementById('editState');
+      const editMessage = document.getElementById('editMessage');
+      const editStatus = document.getElementById('editStatus');
+
+      let allLeads = [];
+      let pendingDeleteId = null;
+
+      function showToast(message, type = 'success') {
+        toast.textContent = message;
+        toast.className = `toast visible ${type}`;
+        clearTimeout(showToast.timeoutId);
+        showToast.timeoutId = setTimeout(() => {
+          toast.classList.remove('visible');
+        }, 2600);
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function getStatusValue(lead) {
+        return String(lead.status || 'new').trim().toLowerCase() || 'new';
+      }
+
+      function formatRelativeTime(dateString) {
+        const date = new Date(dateString);
+        const timestamp = date.getTime();
+        if (Number.isNaN(timestamp)) return 'Unknown';
+
+        const diffMs = Date.now() - timestamp;
+        if (diffMs < 0) return 'Just now';
+
+        const diffSeconds = Math.floor(diffMs / 1000);
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        const diffHours = Math.floor(diffMinutes / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffMinutes < 60) {
+          if (diffSeconds < 60) return diffSeconds === 0 ? 'Just now' : `${diffSeconds} seconds ago`;
+          return diffMinutes === 1 ? '1 minute ago' : `${diffMinutes} minutes ago`;
+        }
+
+        if (diffHours < 24) {
+          return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+        }
+
+        if (diffDays < 7) {
+          return diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+        }
+
+        const diffWeeks = Math.floor(diffDays / 7);
+        if (diffWeeks < 5) {
+          return diffWeeks === 1 ? '1 week ago' : `${diffWeeks} weeks ago`;
+        }
+
+        const diffMonths = Math.floor(diffDays / 30);
+        return diffMonths === 1 ? '1 month ago' : `${diffMonths} months ago`;
+      }
+
+      function formatExactTime(dateString) {
+        const date = new Date(dateString);
+        if (Number.isNaN(date.getTime())) return 'Unknown submission time';
+
+        return date.toLocaleString([], {
+          dateStyle: 'medium',
+          timeStyle: 'medium',
+        });
+      }
+
+      function getFilteredLeads() {
+        const query = searchInput.value.trim().toLowerCase();
+        const selectedStatus = statusFilter.value;
+
+        return allLeads.filter((lead) => {
+          const statusValue = getStatusValue(lead);
+          const matchesStatus = selectedStatus === 'all' || statusValue === selectedStatus;
+          const searchableText = [
+            lead.id,
+            lead.name,
+            lead.email,
+            lead.phone,
+            lead.program,
+            lead.state,
+            lead.learner,
+            lead.message,
+          ].join(' ').toLowerCase();
+          const matchesQuery = !query || searchableText.includes(query);
+
+          return matchesStatus && matchesQuery;
+        });
+      }
+
+      function renderRows(filteredLeads) {
+        if (!filteredLeads.length) {
+          rows.innerHTML = '<tr><td colspan="12" class="muted">No matching leads found.</td></tr>';
+          return;
+        }
+
+        rows.innerHTML = filteredLeads.map((lead, index) => {
+          const statusValue = getStatusValue(lead);
+          const statusOptions = ['new', 'contacted', 'follow-up', 'enrolled']
+            .map((status) => `<option value="${status}" ${status === statusValue ? 'selected' : ''}>${status}</option>`)
+            .join('');
+
+          return `
+            <tr>
+              <td>${index + 1}</td>
+              <td><code>${escapeHtml(lead.id || '—')}</code></td>
+              <td>${escapeHtml(lead.name || '—')}</td>
+              <td>${escapeHtml(lead.email || '—')}</td>
+              <td>${escapeHtml(lead.phone || '—')}</td>
+              <td>${escapeHtml(lead.program || '—')}</td>
+              <td>${escapeHtml(lead.state || '—')}</td>
+              <td>${escapeHtml(lead.learner || '—')}</td>
+              <td>${escapeHtml(lead.message || '—')}</td>
+              <td>
+                <select class="inline-status-select" data-inline-status-id="${lead.id}" aria-label="Update lead status">
+                  ${statusOptions}
+                </select>
+              </td>
+              <td>
+                <time datetime="${escapeHtml(lead.created_at || '')}" title="${escapeHtml(formatExactTime(lead.created_at))}">
+                  ${escapeHtml(formatRelativeTime(lead.created_at))}
+                </time>
+              </td>
+              <td>
+                <div class="lead-actions">
+                  <button class="action-button" type="button" data-action="edit" data-id="${lead.id}">Edit</button>
+                  <button class="action-button delete" type="button" data-action="delete" data-id="${lead.id}">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function updateSummary() {
+        const total = allLeads.length;
+        const visible = getFilteredLeads().length;
+        const newCount = allLeads.filter((lead) => getStatusValue(lead) === 'new').length;
+        const monthCount = allLeads.filter((lead) => {
+          const created = new Date(lead.created_at);
+          const now = new Date();
+          return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+        }).length;
+        const contactedCount = allLeads.filter((lead) => getStatusValue(lead) === 'contacted').length;
+        const followUpCount = allLeads.filter((lead) => getStatusValue(lead) === 'follow-up').length;
+        const enrolledCount = allLeads.filter((lead) => getStatusValue(lead) === 'enrolled').length;
+
+        totalEl.textContent = total;
+        newEl.textContent = newCount;
+        monthEl.textContent = monthCount;
+        statusEl.textContent = total ? 'Live' : 'Ready';
+        summary.textContent = `${visible} visible lead(s) from ${total} total record(s) · auto-refreshes every 15 seconds.`;
+
+        statusNewCount.textContent = newCount;
+        statusContactedCount.textContent = contactedCount;
+        statusFollowUpCount.textContent = followUpCount;
+        statusEnrolledCount.textContent = enrolledCount;
+      }
+
+      function openModal(lead) {
+        leadIdField.value = lead.id;
+        editName.value = lead.name || '';
+        editEmail.value = lead.email || '';
+        editPhone.value = lead.phone || '';
+        editLearner.value = lead.learner || 'Myself';
+        editProgram.value = lead.program || '';
+        editState.value = lead.state || '';
+        editMessage.value = lead.message || '';
+        editStatus.value = getStatusValue(lead);
+        modal.classList.add('visible');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeModal() {
+        modal.classList.remove('visible');
+        modal.setAttribute('aria-hidden', 'true');
+        leadForm.reset();
+      }
+
+      async function loadLeads() {
+        try {
+          const response = await fetch('/api/leads', { cache: 'no-store' });
+          const data = await response.json();
+
+          if (!response.ok || !data.success) {
+            throw new Error(data.message || 'Unable to load leads.');
+          }
+
+          allLeads = data.leads || [];
+          updateSummary();
+          renderRows(getFilteredLeads());
+        } catch (error) {
+          console.error('Failed to refresh leads:', error);
+          summary.textContent = 'Unable to load leads. Retrying shortly…';
+          rows.innerHTML = '<tr><td colspan="12" class="muted">Unable to load lead data.</td></tr>';
+        }
+      }
+
+      function closeConfirmModal() {
+        confirmModal.classList.remove('visible');
+        confirmModal.setAttribute('aria-hidden', 'true');
+        pendingDeleteId = null;
+      }
+
+      function openConfirmModal(leadId) {
+        pendingDeleteId = leadId;
+        confirmModal.classList.add('visible');
+        confirmModal.setAttribute('aria-hidden', 'false');
+      }
+
+      document.addEventListener('click', async (event) => {
+        const target = event.target.closest('[data-action]');
+        if (!target) return;
+
+        const leadId = target.dataset.id;
+        const action = target.dataset.action;
+
+        if (action === 'edit') {
+          const lead = allLeads.find((item) => item.id === leadId);
+          if (lead) openModal(lead);
+          return;
+        }
+
+        if (action === 'delete') {
+          openConfirmModal(leadId);
+        }
+      });
+
+      document.addEventListener('change', async (event) => {
+        const select = event.target.closest('[data-inline-status-id]');
+        if (!select) return;
+
+        const leadId = select.dataset.inlineStatusId;
+        const newStatus = select.value;
+
+        const response = await fetch(`/api/leads/${leadId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: allLeads.find((lead) => lead.id === leadId)?.name || '',
+            email: allLeads.find((lead) => lead.id === leadId)?.email || '',
+            phone: allLeads.find((lead) => lead.id === leadId)?.phone || '',
+            learner: allLeads.find((lead) => lead.id === leadId)?.learner || 'Myself',
+            program: allLeads.find((lead) => lead.id === leadId)?.program || '',
+            state: allLeads.find((lead) => lead.id === leadId)?.state || '',
+            message: allLeads.find((lead) => lead.id === leadId)?.message || '',
+            status: newStatus,
+          })
+        });
+
+        const result = await response.json();
+        if (!result.success) {
+          showToast(result.message || 'Unable to update lead status.', 'error');
+          await loadLeads();
+          return;
+        }
+
+        showToast('Lead status updated successfully.', 'success');
+        await loadLeads();
+      });
+
+      leadForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const payload = {
+          name: editName.value.trim(),
+          email: editEmail.value.trim(),
+          phone: editPhone.value.trim(),
+          learner: editLearner.value,
+          program: editProgram.value.trim(),
+          state: editState.value,
+          message: editMessage.value.trim(),
+          status: editStatus.value,
+        };
+
+        const response = await fetch(`/api/leads/${leadIdField.value}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        if (!result.success) {
+          alert(result.message || 'Unable to update lead.');
+          return;
+        }
+
+        closeModal();
+        await loadLeads();
+      });
+
+      document.querySelectorAll('[data-close-modal="true"]').forEach((button) => {
+        button.addEventListener('click', closeModal);
+      });
+
+      document.querySelectorAll('[data-confirm-close="true"]').forEach((button) => {
+        button.addEventListener('click', closeConfirmModal);
+      });
+
+      confirmDeleteButton.addEventListener('click', async () => {
+        if (!pendingDeleteId) return;
+
+        const response = await fetch(`/api/leads/${pendingDeleteId}`, { method: 'DELETE' });
+        const result = await response.json();
+
+        closeConfirmModal();
+
+        if (!result.success) {
+          showToast(result.message || 'Unable to delete lead.', 'error');
+          return;
+        }
+
+        showToast('Lead deleted successfully.', 'success');
+        await loadLeads();
+      });
+
+      searchInput.addEventListener('input', () => {
+        updateSummary();
+        renderRows(getFilteredLeads());
+      });
+
+      statusFilter.addEventListener('change', () => {
+        updateSummary();
+        renderRows(getFilteredLeads());
+      });
+
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          if (modal.classList.contains('visible')) closeModal();
+          if (confirmModal.classList.contains('visible')) closeConfirmModal();
+        }
+      });
+
+      loadLeads();
+
+      // Keep the dashboard current without requiring a manual browser refresh.
+      const leadRefreshTimer = window.setInterval(() => {
+        if (!document.hidden) loadLeads();
+      }, 15000);
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) loadLeads();
+      });
+
+      window.addEventListener('beforeunload', () => {
+        window.clearInterval(leadRefreshTimer);
+      });
+    </script>
+  </body>
+</html>
