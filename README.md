@@ -31,9 +31,10 @@ The platform is built around three outcomes:
 </p>
 <p align="center">
   <img src="docs/screenshots/admin-login.png" alt="Live IQA admin login screenshot" width="48%" />
+  <img src="docs/screenshots/admin-dashboard.png" alt="Live IQA admin dashboard screenshot" width="48%" />
 </p>
 
-_These screenshots were captured from the running IQA website. The admin dashboard capture is kept local because it contains applicant-like records._
+_These screenshots were captured from the running IQA website using demonstration records._
 
 ## Features
 
