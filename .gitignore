@@ -8,6 +8,9 @@ data/*.db
 data/*.csv
 data/*.json
 
+# Admin screenshots may contain confidential applicant information.
+docs/screenshots/admin-dashboard.png
+
 # Local editor and OS files.
 .vscode/
 .idea/

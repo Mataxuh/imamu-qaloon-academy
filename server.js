@@ -10,7 +10,7 @@ const ExcelJS = require('exceljs');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const WHATSAPP_NUMBER = process.env.WHATSAPP_NUMBER || '2348065639050';
 const EMAIL_TO = process.env.EMAIL_TO || process.env.SMTP_USER || 'imamuqaloonacademy@gmail.com';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;

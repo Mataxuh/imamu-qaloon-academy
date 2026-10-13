@@ -1,9 +1,5 @@
 # Imamu Qaloon Academy (IQA)
 
-<p align="center">
-  <img src="docs/screenshots/iqa-mark.svg" alt="Imamu Qaloon Academy" width="92" />
-</p>
-
 <p align="center"><strong>A faith-centered education website with a practical admissions and lead-management workflow.</strong></p>
 
 <p align="center">
@@ -26,15 +22,18 @@ The platform is built around three outcomes:
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/homepage-real.png" alt="Live IQA homepage screenshot" width="48%" />
-  <img src="docs/screenshots/programs-real.png" alt="Live IQA programs page screenshot" width="48%" />
+  <img src="docs/screenshots/homepage.png" alt="Live IQA homepage screenshot" width="48%" />
+  <img src="docs/screenshots/explore.png" alt="Live IQA learning pathways screenshot" width="48%" />
 </p>
 <p align="center">
-  <img src="docs/screenshots/contact-real.png" alt="Live IQA contact page screenshot" width="48%" />
-  <img src="docs/screenshots/admin-login-real.png" alt="Live IQA admin login screenshot" width="48%" />
+  <img src="docs/screenshots/programs.png" alt="Live IQA programs page screenshot" width="48%" />
+  <img src="docs/screenshots/contact.png" alt="Live IQA contact page screenshot" width="48%" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/admin-login.png" alt="Live IQA admin login screenshot" width="48%" />
 </p>
 
-_These screenshots were captured from the running IQA website. The admin capture shows the protected login entry point; no applicant data is included._
+_These screenshots were captured from the running IQA website. The admin dashboard capture is kept local because it contains applicant-like records._
 
 ## Features
 
@@ -94,7 +93,7 @@ npm run dev
 
 On macOS/Linux, use `cp .env.example .env` instead of `copy`.
 
-Then open [http://localhost:3001](http://localhost:3000). The admin entry point is available at `/admin-login`.
+Then open [http://localhost:3001](http://localhost:3001). The admin entry point is available at `/admin-login`.
 
 For a production-style start:
 
@@ -114,7 +113,7 @@ Copy `.env.example` to `.env` and set real values. Never commit `.env` or expose
 
 | Variable | Purpose |
 | --- | --- |
-| `PORT` | HTTP port; defaults to `3000` |
+| `PORT` | HTTP port; defaults to `3001` |
 | `ADMIN_PASSWORD` | Required password for the admin portal |
 | `NODE_ENV` | Use `production` when deployed behind HTTPS |
 | `SMTP_HOST` | SMTP server hostname |
